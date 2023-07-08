@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 // use App\Models\Product;
 use App\Interfaces\ProductRepositoryInterface;
 use App\Http\Requests\ProductStoreRequest;
+use App\Jobs\StatusJob;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -22,6 +23,7 @@ class ProductController extends Controller
     {
         //
         $products = $this->productRepository->getAllProducts();
+        StatusJob::dispatch()->onQueue('default');
         return view('products.index', compact('products'));
     }
 
@@ -97,4 +99,8 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Record has been deleted successfully!');
 
     }
+    // public function updateStatus()
+    // {
+    //     StatusJob::dispatch()->onQueue('default');
+    // }
 }
