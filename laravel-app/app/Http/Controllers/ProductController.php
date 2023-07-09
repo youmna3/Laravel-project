@@ -23,7 +23,7 @@ class ProductController extends Controller
     {
         //
         $products = $this->productRepository->getAllProducts();
-        StatusJob::dispatch()->onQueue('default');
+        // StatusJob::dispatch()->delay(60);
         return view('products.index', compact('products'));
     }
 
@@ -53,6 +53,7 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         $this->productRepository->createProduct($validated);
+        StatusJob::dispatch()->delay(60);
         return redirect()->route('products.index');
     }
 
@@ -99,8 +100,8 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Record has been deleted successfully!');
 
     }
-    // public function updateStatus()
-    // {
-    //     StatusJob::dispatch()->onQueue('default');
-    // }
+    public function updateStatus()
+    {
+        StatusJob::dispatch();
+    }
 }
