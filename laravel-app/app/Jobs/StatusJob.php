@@ -28,6 +28,6 @@ class StatusJob implements ShouldQueue
     public function handle(): void
     {
         //
-        DB::table('products')->update(['status' => 1]);
+        DB::table('products')->where('status', 0)->update(['status' => 1]);
     }
 }

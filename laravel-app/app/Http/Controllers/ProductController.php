@@ -41,19 +41,11 @@ class ProductController extends Controller
      */
     public function store(ProductStoreRequest $request)
     {
-        //
-        // $validated = $request->validated();
-        /*
-        $attributes = [
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price
-        ];
-        */
+
         $validated = $request->validated();
 
         $this->productRepository->createProduct($validated);
-        StatusJob::dispatch()->delay(60);
+        // StatusJob::dispatch();
         return redirect()->route('products.index');
     }
 
@@ -97,11 +89,8 @@ class ProductController extends Controller
     {
         //
         $this->productRepository->deleteProduct($id);
-        return redirect()->route('products.index')->with('success', 'Record has been deleted successfully!');
+        return redirect()->route('products.index');
 
     }
-    public function updateStatus()
-    {
-        StatusJob::dispatch();
-    }
+
 }
