@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Interfaces\ProductRepositoryInterface;
 use App\Http\Requests\ProductStoreRequest;
 use App\Jobs\StatusJob;
+use App\Models\Image;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -22,7 +23,9 @@ class ProductController extends Controller
     public function index()
     {
         //
+
         $products = $this->productRepository->getAllProducts();
+
         // StatusJob::dispatch()->delay(60);
         return view('products.index', compact('products'));
     }

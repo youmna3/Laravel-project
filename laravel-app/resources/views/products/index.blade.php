@@ -10,6 +10,7 @@
                 <th>Description</th>
                 <th>Price</th>
                 <th>Status</th>
+                <th>Image</th>
                 <th colspan="3">Actions</th>
             </tr>
         </thead>
@@ -21,6 +22,11 @@
                     <td>{{ $product->description }}</td>
                     <td>${{ $product->price }}</td>
                     <td>{{ $product->status }}</td>
+                    <td>
+                        @foreach ($product->image as $image)
+                            {{ $image->image_url }}
+                        @endforeach
+                    </td>
                     <td><a href="{{ url('products/' . $product['id'] . '/edit') }}" class="btn btn-success">EDIT</a>
                     <td>
                         <form action="{{ url('products/' . $product->id) }} " method="POST">

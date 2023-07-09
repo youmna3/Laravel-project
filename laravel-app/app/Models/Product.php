@@ -11,7 +11,7 @@ class Product extends Model
     protected $guarded = [];
     public function image()
     {
-        return $this->morphOne(Image::class, 'imageable');
+        return $this->morphMany(Image::class, 'imageable');
 
     }
 }

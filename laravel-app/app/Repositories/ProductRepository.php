@@ -2,17 +2,18 @@
 namespace App\Repositories;
 
 use App\Interfaces\ProductRepositoryInterface;
+use App\Models\Image;
 use App\Models\Product;
 
 class ProductRepository implements ProductRepositoryInterface
 {
     public function getAllProducts()
     {
-        return Product::all();
+        // return Product::all();
+        return Product::with('image')->get();
     }
     public function createProduct($attributes)
     {
-
         return Product::create($attributes);
 
     }
