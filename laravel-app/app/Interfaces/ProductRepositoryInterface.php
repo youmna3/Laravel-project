@@ -5,9 +5,17 @@ namespace App\Interfaces;
 interface ProductRepositoryInterface
 {
     public function getAllProducts();
-    public function createProduct($attributes, $imagePath);
+
+
+    // public function createProduct($attributes, $imagePath);
+    public static function createProduct($attributes);
+    public function addImageToProduct($product, $imagePath);
+
+
     public function getProduct($id);
+
     public function updateProduct($id, $newDetails);
+
     public function deleteProduct($id);
 
 }

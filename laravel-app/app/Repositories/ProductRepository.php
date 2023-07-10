@@ -12,6 +12,7 @@ class ProductRepository implements ProductRepositoryInterface
         // return Product::all();
         return Product::with('image')->get();
     }
+    /*
     public function createProduct($attributes, $imagePath)
     {
         unset($attributes['image']);
@@ -26,6 +27,23 @@ class ProductRepository implements ProductRepositoryInterface
         return $product;
         // return Product::create($attributes);
 
+    }
+    */
+    public static function createProduct($attributes)
+    {
+        $product = Product::create($attributes);
+
+        return $product;
+    }
+    public function addImageToProduct($product, $imagePath)
+    {
+        $product = ProductRepository::createProduct($product);
+        $image = new Image([
+            'imageable_id' => $product->id,
+            'imageable_type' => 'App\Models\Product',
+            'image_url' => $imagePath
+        ]);
+        $product->image()->save($image);
     }
     public function getProduct($id)
     {

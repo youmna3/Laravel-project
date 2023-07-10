@@ -42,6 +42,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /*
     public function store(ProductStoreRequest $request)
     {
 
@@ -52,6 +53,27 @@ class ProductController extends Controller
         // StatusJob::dispatch();
         return redirect()->route('products.index');
     }
+*/
+    public function store(ProductStoreRequest $request)
+    {
+        $validated = $request->validated();
+        $productAttributes = [
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+        ];
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images');
+            $this->productRepository->addImageToProduct($productAttributes, $path);
+        } else {
+            $this->productRepository->createProduct($productAttributes);
+        }
+
+        return redirect()->route('products.index');
+
+    }
+
 
     /**
      * Display the specified resource.
