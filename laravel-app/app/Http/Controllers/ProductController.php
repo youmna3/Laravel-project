@@ -46,8 +46,9 @@ class ProductController extends Controller
     {
 
         $validated = $request->validated();
+        $path = $request->file('image')->store('images');
 
-        $this->productRepository->createProduct($validated);
+        $this->productRepository->createProduct($validated, $path);
         // StatusJob::dispatch();
         return redirect()->route('products.index');
     }

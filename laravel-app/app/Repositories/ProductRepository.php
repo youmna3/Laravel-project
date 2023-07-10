@@ -12,9 +12,19 @@ class ProductRepository implements ProductRepositoryInterface
         // return Product::all();
         return Product::with('image')->get();
     }
-    public function createProduct($attributes)
+    public function createProduct($attributes, $imagePath)
     {
-        return Product::create($attributes);
+        unset($attributes['image']);
+
+        $product = Product::create($attributes);
+        $image = new Image([
+            'imageable_id' => $product->id,
+            'imageable_type' => 'App\Models\Product',
+            'image_url' => $imagePath
+        ]);
+        $product->image()->save($image);
+        return $product;
+        // return Product::create($attributes);
 
     }
     public function getProduct($id)

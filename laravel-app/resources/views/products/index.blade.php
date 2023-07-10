@@ -2,7 +2,7 @@
 @section('content')
     <h2>List Of Products</h2>
     <a class="btn btn-success" href="{{ route('products.create') }}">Add</a>
-    <table class="table table-striped-columns">
+    <table class="table table-striped-columns text-center">
         <thead>
             <tr>
                 <th>Id</th>
@@ -23,8 +23,8 @@
                     <td>${{ $product->price }}</td>
                     <td>{{ $product->status }}</td>
                     <td>
-                        @foreach ($product->image as $image)
-                            {{ $image->image_url }}
+                        @foreach ($product->image as $img)
+                            <img src="{{ asset('storage/' . $img->image_url) }}">
                         @endforeach
                     </td>
                     <td><a href="{{ url('products/' . $product['id'] . '/edit') }}" class="btn btn-success">EDIT</a>
