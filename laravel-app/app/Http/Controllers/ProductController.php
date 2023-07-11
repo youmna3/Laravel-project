@@ -125,9 +125,9 @@ class ProductController extends Controller
         return redirect()->route('products.index');
 
     }
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id)
     {
         //
