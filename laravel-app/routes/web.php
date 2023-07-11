@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::resource('products', ProductController::class);
+Route::resource('posts', PostController::class);
 // Route::get('/', [ProductController::class, 'index']);
 
 Route::get('/images/{filename}', [ImageController::class, 'show']);

@@ -4,6 +4,7 @@ namespace App\Repositories;
 use App\Interfaces\ProductRepositoryInterface;
 use App\Models\Image;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 
 class ProductRepository implements ProductRepositoryInterface
 {
@@ -12,23 +13,7 @@ class ProductRepository implements ProductRepositoryInterface
         // return Product::all();
         return Product::with('image')->get();
     }
-    /*
-    public function createProduct($attributes, $imagePath)
-    {
-        unset($attributes['image']);
 
-        $product = Product::create($attributes);
-        $image = new Image([
-            'imageable_id' => $product->id,
-            'imageable_type' => 'App\Models\Product',
-            'image_url' => $imagePath
-        ]);
-        $product->image()->save($image);
-        return $product;
-        // return Product::create($attributes);
-
-    }
-    */
     public function createProduct($attributes)
     {
         $product = Product::create($attributes);
@@ -38,22 +23,13 @@ class ProductRepository implements ProductRepositoryInterface
     public function addImageToProduct($product, $imagePath)
     {
         $product = $this->createProduct($product);
-        $image = new Image([
-            'imageable_id' => $product->id,
-            'imageable_type' => 'App\Models\Product',
-            'image_url' => $imagePath
-        ]);
-        $product->image()->save($image);
+        $product->image()->createMany([['image_url' => $imagePath]]);
     }
     public function getProduct($id)
     {
         return Product::findOrFail($id);
     }
-    // public function updateProduct($id, $newDetails)
-    // {
 
-    //     return Product::whereId($id)->update($newDetails);
-    // }
     public function updateProduct($id, $attributes)
     {
         $product = Product::findOrFail($id);
@@ -75,16 +51,21 @@ class ProductRepository implements ProductRepositoryInterface
             }
         } else {
             // Add a new image
-            $product->image()->create(['image_url' => $imagePath]);
+            $product->image()->createMany(['image_url' => $imagePath]);
         }
 
     }
 
     public function deleteProduct($id)
     {
-        // $product = Product::findOrFail($id);
-        Product::findOrFail($id);
-        return Product::destroy($id);
+
+        $product = Product::findOrFail($id);
+        $images = $product->image;
+        $product->delete();
+        foreach ($images as $image) {
+            Storage::delete($image->image_url);
+            $image->delete();
+        }
 
     }
 
