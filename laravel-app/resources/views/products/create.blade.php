@@ -26,7 +26,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Product Image</label>
-            <input name="image" type="file" value="{{ old('image') }}" /><br />
+            <input name="image" type="file" /><br />
             @error('image')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror

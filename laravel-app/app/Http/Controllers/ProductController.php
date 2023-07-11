@@ -99,15 +99,32 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    // public function update($id, ProductStoreRequest $request)
+    // {
+    //     //
+    //     $validated = $request->validated();
+    //     $this->productRepository->updateProduct($id, $validated);
+    //     return redirect()->route('products.index');
+
+    // }
     public function update($id, ProductStoreRequest $request)
     {
-        //
         $validated = $request->validated();
-        $this->productRepository->updateProduct($id, $validated);
+        $productAttributes = [
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+        ];
+
+        $this->productRepository->updateProduct($id, $productAttributes);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images');
+            $this->productRepository->updateProductImage($id, $path);
+        }
         return redirect()->route('products.index');
 
     }
-
     // /**
     //  * Remove the specified resource from storage.
     //  */

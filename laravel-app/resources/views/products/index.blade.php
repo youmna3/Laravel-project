@@ -24,7 +24,7 @@
                     <td>{{ $product->status }}</td>
                     <td>
                         @foreach ($product->image as $img)
-                            <img src="{{ asset('storage/' . $img->image_url) }}">
+                            <img src="{{ asset($img->image_url) }} "width="100px">
                         @endforeach
                     </td>
                     <td><a href="{{ url('products/' . $product['id'] . '/edit') }}" class="btn btn-success">EDIT</a>

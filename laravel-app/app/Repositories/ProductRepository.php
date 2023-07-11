@@ -29,7 +29,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     }
     */
-    public static function createProduct($attributes)
+    public function createProduct($attributes)
     {
         $product = Product::create($attributes);
 
@@ -37,7 +37,7 @@ class ProductRepository implements ProductRepositoryInterface
     }
     public function addImageToProduct($product, $imagePath)
     {
-        $product = ProductRepository::createProduct($product);
+        $product = $this->createProduct($product);
         $image = new Image([
             'imageable_id' => $product->id,
             'imageable_type' => 'App\Models\Product',
@@ -49,11 +49,37 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return Product::findOrFail($id);
     }
-    public function updateProduct($id, $newDetails)
+    // public function updateProduct($id, $newDetails)
+    // {
+
+    //     return Product::whereId($id)->update($newDetails);
+    // }
+    public function updateProduct($id, $attributes)
     {
-        // return Product::findOrFail($id);
-        return Product::whereId($id)->update($newDetails);
+        $product = Product::findOrFail($id);
+
+        $product->update($attributes);
+
+        return $product;
     }
+
+    public function updateProductImage($id, $imagePath)
+    {
+        $product = Product::findOrFail($id);
+        $images = $product->image;
+        if ($images->isNotEmpty()) {
+            // Update all existing images
+            foreach ($images as $image) {
+                $image->image_url = $imagePath;
+                $image->save();
+            }
+        } else {
+            // Add a new image
+            $product->image()->create(['image_url' => $imagePath]);
+        }
+
+    }
+
     public function deleteProduct($id)
     {
         // $product = Product::findOrFail($id);

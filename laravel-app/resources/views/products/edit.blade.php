@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <h2>Edit Product</h2>
-    <form method="POST" action="{{ url('products/' . $product->id) }}">
+    <form method="POST" action="{{ url('products/' . $product->id) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="mb-3">
@@ -23,6 +23,13 @@
             <label class="form-label">Price</label>
             <input name="price" type="number" class="form-control" value="{{ old('price', $product->price) }}">
             @error('price')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Product Image</label>
+            <input name="image" type="file" value="{{ old('image') }}" /><br />
+            @error('image')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
